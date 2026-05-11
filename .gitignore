@@ -1,0 +1,13 @@
+# AI agent tooling — not part of the project repository
+AGENTS.md
+CLAUDE.md
+.claude/
+docs/ai-development/
+
+# Environment and secrets
+.env
+*.pyc
+__pycache__/
+*.egg-info/
+.pytest_cache/
+staticfiles/
