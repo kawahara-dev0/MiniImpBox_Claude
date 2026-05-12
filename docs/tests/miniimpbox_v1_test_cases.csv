@@ -75,4 +75,43 @@ pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_idempotent_
 S3-13,High,TDD,seed_admin second run outputs 'already exists' warning,"Automated (TDD):
 pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_second_run_outputs_already_exists_warning","stdout contains 'Admin already exists' or 'already exists'",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-14,High,N/A,AUTHENTICATION_BACKENDS setting is correctly set to EmailBackend,"AI review:
-Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,Working tree,Claude (Builder),Already set in Step 1; no change required in Step 3
+Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,Working tree,Claude (Builder),Already set in Step 1; no change required in Step 3S4-1,High,TDD,GET /admin-portal/login/ renders login form (HTTP 200),"Automated (TDD):
+pytest accounts/tests/test_views.py::TestAdminLoginViewGet::test_get_renders_login_form","HTTP 200; login form rendered",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S4-2,High,TDD,Login form contains email/password fields and CSRF token,"Automated (TDD):
+pytest ...::test_get_contains_email_and_password_fields
+pytest ...::test_get_contains_csrf_token","email and password inputs present; csrfmiddlewaretoken present",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S4-3,High,TDD,Already-authenticated staff GET /admin-portal/login/ redirects to list,"Automated (TDD):
+pytest ...::test_get_already_authenticated_staff_redirects_to_list","HTTP 302 to /admin-portal/proposals/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S4-4,High,TDD,POST correct credentials: session created + redirect to list,"Automated (TDD):
+pytest ...::test_correct_credentials_redirects_to_list
+pytest ...::test_correct_credentials_creates_session","HTTP 302 to /admin-portal/proposals/; _auth_user_id in session",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S4-5,High,TDD,POST correct credentials: AdminLoginLog written with success=True,"Automated (TDD):
+pytest ...::test_correct_credentials_writes_login_log_success_true","AdminLoginLog row: email=submitted email success=True",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+S4-6,High,TDD,POST correct credentials: password not in any AdminLoginLog column,"Automated (TDD):
+pytest ...::test_correct_credentials_login_log_has_no_password
+pytest ...::test_password_not_in_any_log_column_on_success","plaintext password not present in email/success/ip_address fields",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+S4-7,High,TDD,POST wrong password: HTTP 200 + generic error + no session,"Automated (TDD):
+pytest ...::test_wrong_password_returns_200
+pytest ...::test_wrong_password_no_session
+pytest ...::test_wrong_password_shows_generic_error","HTTP 200; 'Invalid email address or password.' shown; no _auth_user_id in session",AI,N/A,All 3 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-05
+S4-8,High,TDD,POST wrong password: AdminLoginLog written with success=False,"Automated (TDD):
+pytest ...::test_wrong_password_writes_login_log_success_false","AdminLoginLog row: success=False",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S4-9,High,TDD,POST non-existent email: same behavior as wrong password (no account hint),"Automated (TDD):
+pytest ...::test_nonexistent_email_returns_200
+pytest ...::test_nonexistent_email_no_session
+pytest ...::test_nonexistent_email_shows_same_generic_error
+pytest ...::test_nonexistent_email_writes_login_log_success_false","HTTP 200; same generic error; no session; AdminLoginLog written success=False",AI,N/A,All 4 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-05
+S4-10,High,TDD,AdminLoginLog written before response on failure,"Automated (TDD):
+pytest ...::test_login_log_written_before_response_on_failure","Log row exists after failed POST",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+S4-11,High,TDD,Password not in any AdminLoginLog column on failure,"Automated (TDD):
+pytest ...::test_password_not_in_any_log_column_on_failure","plaintext password not in any stored field",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+S4-12,High,TDD,POST /admin-portal/logout/ invalidates session + redirects to login,"Automated (TDD):
+pytest ...::test_post_logout_invalidates_session
+pytest ...::test_post_logout_redirects_to_login","_auth_user_id removed from session; HTTP 302 to /admin-portal/login/",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-001
+S4-13,High,TDD,GET /admin-portal/logout/ returns HTTP 405,"Automated (TDD):
+pytest ...::test_get_logout_returns_405","HTTP 405 Method Not Allowed",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),POST-only per basic design Section 6.5
+S4-14,High,TDD,Unauthenticated POST to logout redirects to login gracefully,"Automated (TDD):
+pytest ...::test_post_logout_unauthenticated_redirects_to_login","HTTP 302 to /admin-portal/login/; no exception",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S4-15,High,N/A,Manual: login with correct credentials — AdminLoginLog success=True + redirect to list,"Manual UI via browser",Redirect to /admin-portal/proposals/; AdminLoginLog row success=True; no password in log,Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S4-16,High,N/A,Manual: login with wrong credentials — generic error + AdminLoginLog success=False,"Manual UI via browser","'Invalid email address or password.' shown; no session; AdminLoginLog success=False",Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S4-17,High,N/A,Manual: logout — session invalidated + redirect to login,"Manual UI via browser","Session invalidated; redirect to login; subsequent admin access redirects to login",Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
