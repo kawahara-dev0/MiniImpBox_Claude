@@ -157,3 +157,50 @@ S6-9,Medium,N/A,GET /submit/complete/ returns 200 with complete template,"Automa
 pytest proposals/tests/test_views_public.py::TestProposalSubmitCompleteView","HTTP 200; submit_complete.html rendered",AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
 S6-10,Medium,N/A,Manual: submit valid proposal via browser — verify saved in DB with status=new,"Manual UI via browser","Proposal saved; status=new in DB; redirect to /submit/complete/",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
 S6-11,Medium,N/A,Manual: submit invalid contact email — verify form error shown and no proposal saved,"Manual UI via browser","Form re-rendered with error; no new row in DB",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
+S7-1,High,TDD,Unauthenticated GET /admin-portal/proposals/ redirects to login (real list view),"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S7-2,High,TDD,Non-staff GET /admin-portal/proposals/ returns 403,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_non_staff_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S7-3,High,TDD,Staff GET /admin-portal/proposals/ returns 200 with admin_list.html template,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_staff_gets_200
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_list_uses_correct_template
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_pagination_context_present","HTTP 200; admin_list.html; page_obj in context",AI,N/A,All 3 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-ADMIN-03
+S7-4,High,TDD,Unauthenticated GET /admin-portal/proposals/<pk>/ redirects to login,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S7-5,High,TDD,Non-staff GET /admin-portal/proposals/<pk>/ returns 403,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_non_staff_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S7-6,High,TDD,Staff GET /admin-portal/proposals/<pk>/ returns 200 with correct context,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_staff_gets_200
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_uses_correct_template
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_context_contains_proposal
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_context_contains_status_history
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_context_contains_form","HTTP 200; admin_detail.html; proposal/history/form in context",AI,N/A,All 5 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S7-7,High,TDD,GET /admin-portal/proposals/99999/ returns 404,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_nonexistent_proposal_returns_404",HTTP 404,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S7-8,High,TDD,Unauthenticated POST /admin-portal/proposals/<pk>/status/ redirects to login,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S7-9,High,TDD,Non-staff POST /admin-portal/proposals/<pk>/status/ returns 403,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_non_staff_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S7-10,High,TDD,Valid status change updates proposal.status atomically with StatusHistory creation,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_updates_proposal
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_creates_history_row
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_both_proposal_and_history_updated_atomically","proposal.status updated; StatusHistory row created; both in same transaction",AI,N/A,All 3 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / basic design Section 9.1
+S7-11,High,TDD,StatusHistory row records correct old_status new_status changed_by,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_history_records_old_and_new_status
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_history_records_changed_by","old_status=='new'; new_status=='reviewing'; changed_by==staff_user",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+S7-12,High,TDD,Valid status change redirects to proposal detail,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_redirects_to_detail","HTTP 302 to /admin-portal/proposals/<pk>/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S7-13,High,TDD,Invalid status value does not update proposal and does not create StatusHistory row (atomicity),"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_invalid_status_does_not_update_proposal
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_invalid_status_does_not_create_history_row","proposal.status unchanged; StatusHistory.objects.count()==0",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-ADMIN-07 / HD-08 / basic design Section 9.1
+S7-14,High,TDD,StatusHistory has no body/submitter_name/submitter_contact fields (sensitive data non-disclosure),"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_has_no_body_field
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_has_no_submitter_name_field
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_has_no_submitter_contact_field
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_row_does_not_contain_proposal_body","No sensitive proposal fields in StatusHistory",AI,N/A,All 4 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+S7-15,High,TDD,POST /admin-portal/proposals/99999/status/ returns 404,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_nonexistent_proposal_status_change_returns_404",HTTP 404,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+S7-16,High,N/A,Manual: view proposal list — verify proposals ordered by -created_at 20/page,"Manual UI via browser","Proposals listed newest first; paginator appears with >20 proposals",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
+S7-17,High,N/A,Manual: view proposal detail — verify all fields displayed with status history,"Manual UI via browser","All fields shown; StatusHistory rows visible in order",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
+S7-18,High,N/A,Manual: change proposal status — verify status updated in DB and StatusHistory row created,"Manual UI via browser","status updated; StatusHistory row visible in detail; no sensitive fields in history",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
+S7-19,High,N/A,Manual: unauthenticated access to /admin-portal/proposals/ redirects to login (real list view),"Manual UI via browser","HTTP 302 to /admin-portal/login/?next=/admin-portal/proposals/",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item

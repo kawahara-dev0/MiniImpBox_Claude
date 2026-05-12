@@ -30,3 +30,7 @@ class ProposalForm(forms.ModelForm):
         if value:
             EmailValidator()(value)
         return value
+
+
+class StatusChangeForm(forms.Form):
+    new_status = forms.ChoiceField(choices=Proposal.STATUS_CHOICES)
