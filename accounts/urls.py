@@ -1,8 +1,10 @@
-"""
-Account (admin portal auth) URL patterns.
+from django.urls import path
 
-Step 1 placeholder — replaced with real patterns in Step 4.
-"""
+from . import views
+
 app_name = 'accounts'
 
-urlpatterns = []
+urlpatterns = [
+    path('login/', views.AdminLoginView.as_view(), name='login'),
+    path('logout/', views.AdminLogoutView.as_view(), name='logout'),
+]

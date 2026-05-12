@@ -33,14 +33,29 @@
 
 ---
 
+## Step 2 Additional Verification (2026-05-12)
+
+Step 2 (Data models and migrations) was implemented and verified on 2026-05-12.
+
+| Item | Description | Result |
+|---|---|---|
+| 5 | `python manage.py showmigrations proposals accounts` — both [X] 0001_initial | ✅ Pass |
+| 6 | `proposals_proposal`, `proposals_statushistory`, `accounts_adminloginlog` tables visible in PostgreSQL `\dt` | ✅ Pass |
+| 7 | `proposals_proposal` columns match basic design Section 3.1 (title, body, submitter_name, submitter_contact, status, created_at, updated_at; indexes on created_at and status) | ✅ Pass |
+| 8 | `proposals_statushistory` columns match basic design Section 3.2 (old_status, new_status, changed_at, changed_by_id FK, proposal_id FK with PROTECT) | ✅ Pass |
+| 9 | `accounts_adminloginlog` columns match basic design Section 3.3 (email, success, ip_address nullable inet, attempted_at with index) | ✅ Pass |
+
+**All Gate 1 Step 2 verification items: Passed**
+
+---
+
 ## Gate Decision
 
-Phase 2 (Authentication and Authorization — Steps 3, 4, 5) may begin after:
+**Gate 1 is FULLY CLEARED** as of 2026-05-12.
 
-1. Step 2 (Data models and migrations) is implemented and receives Implementation Reviewer sign-off.
-2. Human Gate 1 Step 2 items are verified (see Human Gate 1 in roadmap — `manage.py migrate` succeeds and all expected tables are visible in PostgreSQL).
+Phase 2 (Authentication and Authorization — Steps 3, 4, 5) may now begin after Implementation Reviewer sign-off for Step 2 is recorded.
 
-**Note:** Gate 1 covers both Step 1 and Step 2. This record reflects Step 1 confirmation only. Gate 1 is fully cleared after Step 2 is also verified.
+**Note:** AI Implementation Reviewer sign-off for Step 2 is recorded in `docs/implementation/step-02-models.md` Section 6 (no blocking findings).
 
 ---
 

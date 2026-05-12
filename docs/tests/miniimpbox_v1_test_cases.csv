@@ -22,3 +22,113 @@ S1-4,Low,N/A,pgdata volume persists across docker compose down and up,"Manual UI
 2. Run: docker compose down  (without --volumes)
 3. Run: docker compose up
 4. Verify the app starts again and data in the database (if any) is preserved","After restart, the pgdata volume is intact and the database state is unchanged. No data loss.",Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,4f12728,Kawahara,Gate 1 cleared 2026-05-12. 'docker compose down --volumes' is destructive and must NOT be run in normal operations.
+S2-1,Medium,N/A,Proposal.STATUS_CHOICES values and VALID_STATUSES completeness,"Automated:
+pytest proposals/tests/test_models.py::TestProposalModel::test_status_choices_values
+pytest proposals/tests/test_models.py::TestProposalModel::test_valid_statuses_matches_status_choices
+pytest proposals/tests/test_models.py::TestProposalModel::test_status_choices_has_five_items
+pytest proposals/tests/test_models.py::TestProposalModel::test_status_constants_are_in_valid_statuses","VALID_STATUSES == {new reviewing planned done declined}; matches STATUS_CHOICES; 5 items; all STATUS_* constants present",AI,N/A,"All 4 tests passed. VALID_STATUSES = {new, reviewing, planned, done, declined}",Pass,2026-05-12,b7b2312,Claude (Builder),
+S2-2,Medium,N/A,Proposal field defaults (status=new submitter_name='' submitter_contact=''),"Automated:
+pytest proposals/tests/test_models.py::TestProposalModel::test_default_status_is_new
+pytest proposals/tests/test_models.py::TestProposalModel::test_submitter_name_default_blank
+pytest proposals/tests/test_models.py::TestProposalModel::test_submitter_contact_default_blank","status default is 'new'; submitter_name default is ''; submitter_contact default is ''",AI,N/A,All 3 tests passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
+S2-3,Medium,N/A,Proposal.Meta.ordering is -created_at,"Automated:
+pytest proposals/tests/test_models.py::TestProposalModel::test_ordering_is_descending_created_at",Proposal._meta.ordering == ['-created_at'],AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
+S2-4,High,N/A,on_delete=PROTECT on StatusHistory.proposal raises ProtectedError,"Automated:
+pytest proposals/tests/test_models.py::TestStatusHistoryModel::test_protect_on_delete_proposal","Deleting a Proposal with linked StatusHistory rows raises django.db.models.deletion.ProtectedError",AI,N/A,Passed. ProtectedError confirmed raised.,Pass,2026-05-12,b7b2312,Claude (Builder),Regression guard per roadmap Step 2 test coverage requirement
+S2-5,High,N/A,on_delete=PROTECT on StatusHistory.changed_by raises ProtectedError,"Automated:
+pytest proposals/tests/test_models.py::TestStatusHistoryModel::test_protect_on_delete_user","Deleting a User referenced in StatusHistory rows raises ProtectedError",AI,N/A,Passed. ProtectedError confirmed raised.,Pass,2026-05-12,b7b2312,Claude (Builder),
+S2-6,Medium,N/A,AdminLoginLog.ip_address is nullable and blank-allowed,"Automated:
+pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ip_address_nullable","ip_address field has null=True and blank=True per basic design Section 3.3 (BD-02 pending)",AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),BD-02 pending: confirm IP logging under applicable data handling rules before trial
+S2-7,Medium,N/A,AdminLoginLog.email is CharField not FK,"Automated:
+pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_email_is_charfield_not_fk","email field is CharField(max_length=254); stores submitted value regardless of account existence",AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
+S2-8,Medium,N/A,AdminLoginLog.Meta.ordering is -attempted_at,"Automated:
+pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ordering_is_descending_attempted_at",AdminLoginLog._meta.ordering == ['-attempted_at'],AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
+S2-9,Medium,N/A,python manage.py migrate succeeds and all expected tables created,"Manual CLI:
+1. docker compose exec app python manage.py migrate
+2. Verify no errors
+3. Verify proposals_proposal / proposals_statushistory / accounts_adminloginlog tables exist in PostgreSQL","migrate exits 0; all three tables visible in psql or equivalent DB tool",Human,Phase-blocking,All 3 tables confirmed in psql \dt. Column types and constraints match design. ip_address is inet nullable. FK PROTECT constraints present.,Pass,2026-05-12,e039e16,Kawahara,Gate 1 fully cleared 2026-05-12
+S3-1,High,TDD,EmailBackend.authenticate() returns user for correct credentials,"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_correct_credentials_returns_user","Returns user object with matching pk; not None",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),Test written before implementation
+S3-2,High,TDD,EmailBackend.authenticate() returns None for wrong password,"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_password_returns_none",Returns None; no exception raised,AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-3,High,TDD,EmailBackend.authenticate() returns None for wrong email,"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_email_returns_none",Returns None; no exception raised,AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-4,High,TDD,Wrong-email path calls dummy hash (constant-time mitigation),"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_email_runs_dummy_hash_for_timing_mitigation","User().set_password(password) called once in wrong-email path; prevents timing-based account enumeration",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),Mitigates timing attack per ADR-001 / basic design Section 6.1
+S3-5,High,TDD,Inactive user returns None from authenticate(),"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_inactive_user_returns_none","user_can_authenticate() returns False for is_active=False; authenticate() returns None",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-6,High,TDD,Empty or None username returns None without exception,"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_empty_email_returns_none
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_none_username_returns_none",Returns None silently; no exception leaked to caller,AI,N/A,Both passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-7,High,TDD,Wrong-email path does not expose account existence via exception,"Automated (TDD):
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_authenticate_does_not_expose_existence_via_exception",No exception raised; returns None silently (FR-AUTH-05),AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-8,High,TDD,seed_admin creates user with is_staff=True is_superuser=False,"Automated (TDD):
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_creates_user_with_correct_flags","User created with is_staff=True, is_superuser=False, is_active=True",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-9,High,TDD,seed_admin sets username equal to email,"Automated (TDD):
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_username_set_to_email",user.username == email,AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-10,High,TDD,seed_admin stores hashed password not plaintext,"Automated (TDD):
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_password_is_hashed_not_plaintext","user.password starts with 'pbkdf2_'; not equal to plaintext",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-11,High,TDD,seed_admin + EmailBackend authenticate end-to-end,"Automated (TDD):
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_can_authenticate_with_seeded_credentials","After seed_admin, EmailBackend.authenticate() with seeded credentials returns the user",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-12,High,TDD,seed_admin is idempotent — no duplicate on second run,"Automated (TDD):
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_idempotent_no_duplicate_on_second_run","User.objects.filter(email=...).count() == 1 after two runs",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-13,High,TDD,seed_admin second run outputs 'already exists' warning,"Automated (TDD):
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_second_run_outputs_already_exists_warning","stdout contains 'Admin already exists' or 'already exists'",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
+S3-14,High,N/A,AUTHENTICATION_BACKENDS setting is correctly set to EmailBackend,"AI review:
+Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,Working tree,Claude (Builder),Already set in Step 1; no change required in Step 3S4-1,High,TDD,GET /admin-portal/login/ renders login form (HTTP 200),"Automated (TDD):
+pytest accounts/tests/test_views.py::TestAdminLoginViewGet::test_get_renders_login_form","HTTP 200; login form rendered",AI,N/A,Passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
+S4-2,High,TDD,Login form contains email/password fields and CSRF token,"Automated (TDD):
+pytest ...::test_get_contains_email_and_password_fields
+pytest ...::test_get_contains_csrf_token","email and password inputs present; csrfmiddlewaretoken present",AI,N/A,Both passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
+S4-3,High,TDD,Already-authenticated staff GET /admin-portal/login/ redirects to list,"Automated (TDD):
+pytest ...::test_get_already_authenticated_staff_redirects_to_list","HTTP 302 to /admin-portal/proposals/",AI,N/A,Passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
+S4-4,High,TDD,POST correct credentials: session created + redirect to list,"Automated (TDD):
+pytest ...::test_correct_credentials_redirects_to_list
+pytest ...::test_correct_credentials_creates_session","HTTP 302 to /admin-portal/proposals/; _auth_user_id in session",AI,N/A,Both passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
+S4-5,High,TDD,POST correct credentials: AdminLoginLog written with success=True,"Automated (TDD):
+pytest ...::test_correct_credentials_writes_login_log_success_true","AdminLoginLog row: email=submitted email success=True",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+S4-6,High,TDD,POST correct credentials: password not in any AdminLoginLog column,"Automated (TDD):
+pytest ...::test_correct_credentials_login_log_has_no_password
+pytest ...::test_password_not_in_any_log_column_on_success","plaintext password not present in email/success/ip_address fields",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+S4-7,High,TDD,POST wrong password: HTTP 200 + generic error + no session,"Automated (TDD):
+pytest ...::test_wrong_password_returns_200
+pytest ...::test_wrong_password_no_session
+pytest ...::test_wrong_password_shows_generic_error","HTTP 200; 'Invalid email address or password.' shown; no _auth_user_id in session",AI,N/A,All 3 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-05
+S4-8,High,TDD,POST wrong password: AdminLoginLog written with success=False,"Automated (TDD):
+pytest ...::test_wrong_password_writes_login_log_success_false","AdminLoginLog row: success=False",AI,N/A,Passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
+S4-9,High,TDD,POST non-existent email: same behavior as wrong password (no account hint),"Automated (TDD):
+pytest ...::test_nonexistent_email_returns_200
+pytest ...::test_nonexistent_email_no_session
+pytest ...::test_nonexistent_email_shows_same_generic_error
+pytest ...::test_nonexistent_email_writes_login_log_success_false","HTTP 200; same generic error; no session; AdminLoginLog written success=False",AI,N/A,All 4 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-05
+S4-10,High,TDD,AdminLoginLog written before response on failure,"Automated (TDD):
+pytest ...::test_login_log_written_before_response_on_failure","Log row exists after failed POST",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+S4-11,High,TDD,Password not in any AdminLoginLog column on failure,"Automated (TDD):
+pytest ...::test_password_not_in_any_log_column_on_failure","plaintext password not in any stored field",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+S4-12,High,TDD,POST /admin-portal/logout/ invalidates session + redirects to login,"Automated (TDD):
+pytest ...::test_post_logout_invalidates_session
+pytest ...::test_post_logout_redirects_to_login","_auth_user_id removed from session; HTTP 302 to /admin-portal/login/",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-001
+S4-13,High,TDD,GET /admin-portal/logout/ returns HTTP 405,"Automated (TDD):
+pytest ...::test_get_logout_returns_405","HTTP 405 Method Not Allowed",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),POST-only per basic design Section 6.5
+S4-14,High,TDD,Unauthenticated POST to logout redirects to login gracefully,"Automated (TDD):
+pytest ...::test_post_logout_unauthenticated_redirects_to_login","HTTP 302 to /admin-portal/login/; no exception",AI,N/A,Passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
+S4-15,High,N/A,Manual: login with correct credentials — AdminLoginLog success=True + redirect to list,"Manual UI via browser",Redirect to /admin-portal/proposals/; AdminLoginLog row success=True; no password in log,Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S4-16,High,N/A,Manual: login with wrong credentials — generic error + AdminLoginLog success=False,"Manual UI via browser","'Invalid email address or password.' shown; no session; AdminLoginLog success=False",Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S4-17,High,N/A,Manual: logout — session invalidated + redirect to login,"Manual UI via browser","Session invalidated; redirect to login; subsequent admin access redirects to login",Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S5-1,High,TDD,Unauthenticated GET /admin-portal/proposals/ redirects to login (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
+S5-2,High,TDD,Unauthenticated redirect includes next= param (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_unauthenticated_redirect_includes_next_param","next= present in Location; includes /admin-portal/proposals/",AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),FR-AUTH-04
+S5-3,High,TDD,Authenticated non-staff GET /admin-portal/proposals/ returns 403 (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_non_staff_authenticated_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
+S5-4,High,TDD,Authenticated is_staff=True GET /admin-portal/proposals/ proceeds to view (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_staff_authenticated_proceeds_to_view",HTTP 200,AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
+S5-5,High,TDD,Unauthenticated request to AdminRequiredMixin CBV redirects to login,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_unauthenticated_redirects_to_login","HTTP 302; Location contains /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
+S5-6,High,TDD,Unauthenticated AdminRequiredMixin redirect includes next= param,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_unauthenticated_redirect_includes_next_param",next= present in Location,AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),FR-AUTH-04
+S5-7,High,TDD,Authenticated non-staff AdminRequiredMixin raises PermissionDenied,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_non_staff_raises_permission_denied",PermissionDenied raised,AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
+S5-8,High,TDD,Authenticated is_staff=True AdminRequiredMixin proceeds to view,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_staff_authenticated_proceeds_to_view",HTTP 200,AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
+S5-9,High,N/A,Manual: access /admin-portal/proposals/ without session — verify redirect to login with ?next= param,"Manual UI via browser",HTTP 302 to /admin-portal/login/?next=/admin-portal/proposals/,Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
