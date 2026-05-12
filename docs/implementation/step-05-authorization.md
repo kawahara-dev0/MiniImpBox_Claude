@@ -227,13 +227,13 @@ All 4 acceptance criteria from roadmap Step 5 are covered by automated tests. Bo
 
 ## 11. Commit Hash
 
-**Commit:** Pending
+**Commit:** `cd18007`
 
 ---
 
 ## 12. Push Status
 
-**Status:** Pending commit and push.
+**Status:** Pushed to `origin/master` — commit `cd18007`.
 
 **Gate check:** Step 5 is the last step of Phase 2. Human Gate 2 must be cleared before Phase 3 (Step 6) begins. Gate 2 does not block the push of Step 5 — it blocks the start of Phase 3. Push may proceed after commit.
 
