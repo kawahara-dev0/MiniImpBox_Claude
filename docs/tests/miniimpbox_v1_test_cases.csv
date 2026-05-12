@@ -48,31 +48,31 @@ S2-9,Medium,N/A,python manage.py migrate succeeds and all expected tables create
 2. Verify no errors
 3. Verify proposals_proposal / proposals_statushistory / accounts_adminloginlog tables exist in PostgreSQL","migrate exits 0; all three tables visible in psql or equivalent DB tool",Human,Phase-blocking,All 3 tables confirmed in psql \dt. Column types and constraints match design. ip_address is inet nullable. FK PROTECT constraints present.,Pass,2026-05-12,e039e16,Kawahara,Gate 1 fully cleared 2026-05-12
 S3-1,High,TDD,EmailBackend.authenticate() returns user for correct credentials,"Automated (TDD):
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_correct_credentials_returns_user","Returns user object with matching pk; not None",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),Test written before implementation
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_correct_credentials_returns_user","Returns user object with matching pk; not None",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),Test written before implementation
 S3-2,High,TDD,EmailBackend.authenticate() returns None for wrong password,"Automated (TDD):
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_password_returns_none",Returns None; no exception raised,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_password_returns_none",Returns None; no exception raised,AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-3,High,TDD,EmailBackend.authenticate() returns None for wrong email,"Automated (TDD):
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_email_returns_none",Returns None; no exception raised,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_email_returns_none",Returns None; no exception raised,AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-4,High,TDD,Wrong-email path calls dummy hash (constant-time mitigation),"Automated (TDD):
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_email_runs_dummy_hash_for_timing_mitigation","User().set_password(password) called once in wrong-email path; prevents timing-based account enumeration",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),Mitigates timing attack per ADR-001 / basic design Section 6.1
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_wrong_email_runs_dummy_hash_for_timing_mitigation","User().set_password(password) called once in wrong-email path; prevents timing-based account enumeration",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),Mitigates timing attack per ADR-001 / basic design Section 6.1
 S3-5,High,TDD,Inactive user returns None from authenticate(),"Automated (TDD):
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_inactive_user_returns_none","user_can_authenticate() returns False for is_active=False; authenticate() returns None",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_inactive_user_returns_none","user_can_authenticate() returns False for is_active=False; authenticate() returns None",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-6,High,TDD,Empty or None username returns None without exception,"Automated (TDD):
 pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_empty_email_returns_none
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_none_username_returns_none",Returns None silently; no exception leaked to caller,AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_none_username_returns_none",Returns None silently; no exception leaked to caller,AI,N/A,Both passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-7,High,TDD,Wrong-email path does not expose account existence via exception,"Automated (TDD):
-pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_authenticate_does_not_expose_existence_via_exception",No exception raised; returns None silently (FR-AUTH-05),AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_backends.py::TestEmailBackendAuthenticate::test_authenticate_does_not_expose_existence_via_exception",No exception raised; returns None silently (FR-AUTH-05),AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-8,High,TDD,seed_admin creates user with is_staff=True is_superuser=False,"Automated (TDD):
-pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_creates_user_with_correct_flags","User created with is_staff=True, is_superuser=False, is_active=True",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_creates_user_with_correct_flags","User created with is_staff=True, is_superuser=False, is_active=True",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-9,High,TDD,seed_admin sets username equal to email,"Automated (TDD):
-pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_username_set_to_email",user.username == email,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_username_set_to_email",user.username == email,AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-10,High,TDD,seed_admin stores hashed password not plaintext,"Automated (TDD):
-pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_password_is_hashed_not_plaintext","user.password starts with 'pbkdf2_'; not equal to plaintext",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_password_is_hashed_not_plaintext","user.password starts with 'pbkdf2_'; not equal to plaintext",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-11,High,TDD,seed_admin + EmailBackend authenticate end-to-end,"Automated (TDD):
-pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_can_authenticate_with_seeded_credentials","After seed_admin, EmailBackend.authenticate() with seeded credentials returns the user",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_can_authenticate_with_seeded_credentials","After seed_admin, EmailBackend.authenticate() with seeded credentials returns the user",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-12,High,TDD,seed_admin is idempotent — no duplicate on second run,"Automated (TDD):
-pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_idempotent_no_duplicate_on_second_run","User.objects.filter(email=...).count() == 1 after two runs",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_idempotent_no_duplicate_on_second_run","User.objects.filter(email=...).count() == 1 after two runs",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-13,High,TDD,seed_admin second run outputs 'already exists' warning,"Automated (TDD):
-pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_second_run_outputs_already_exists_warning","stdout contains 'Admin already exists' or 'already exists'",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),
+pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_second_run_outputs_already_exists_warning","stdout contains 'Admin already exists' or 'already exists'",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-14,High,N/A,AUTHENTICATION_BACKENDS setting is correctly set to EmailBackend,"AI review:
 Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,Working tree,Claude (Builder),Already set in Step 1; no change required in Step 3

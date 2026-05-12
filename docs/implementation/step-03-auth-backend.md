@@ -274,13 +274,13 @@ The test suite covers all required acceptance criteria from roadmap Step 3 plus 
 
 ## 11. Commit Hash
 
-**Status:** Pending — will be updated after commit.
+**Commit:** `63e7f72`
 
 ---
 
 ## 12. Push Status
 
-**Status:** Pending — will be updated after commit.
+**Status:** Pending push.
 
 **Gate check:** Step 3 is in Phase 2. Human Gate 2 covers Steps 3, 4, and 5, and must be cleared before Phase 3 begins. Gate 2 does not block the push of Step 3 — it blocks the start of Phase 3. Push may proceed after commit.
 
