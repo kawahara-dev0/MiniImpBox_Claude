@@ -204,13 +204,13 @@ All 7 roadmap acceptance criteria are covered. Form tests independently validate
 
 ## 11. Commit Hash
 
-**Commit:** Pending
+**Commit:** `b78c4a3`
 
 ---
 
 ## 12. Push Status
 
-**Status:** Pending commit. Step 6 (Phase 3) has no phase-blocking gate before push. Push may proceed after commit. Gate 3 blocks the start of Phase 4, not the push of Phase 3 steps.
+**Status:** Pushed to `origin/master` — commit `b78c4a3`.
 
 ---
 

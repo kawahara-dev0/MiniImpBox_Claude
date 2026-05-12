@@ -75,7 +75,7 @@ pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_idempotent_
 S3-13,High,TDD,seed_admin second run outputs 'already exists' warning,"Automated (TDD):
 pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_second_run_outputs_already_exists_warning","stdout contains 'Admin already exists' or 'already exists'",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-14,High,N/A,AUTHENTICATION_BACKENDS setting is correctly set to EmailBackend,"AI review:
-Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,Working tree,Claude (Builder),Already set in Step 1; no change required in Step 3S4-1,High,TDD,GET /admin-portal/login/ renders login form (HTTP 200),"Automated (TDD):
+Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,b78c4a3,Claude (Builder),Already set in Step 1; no change required in Step 3S4-1,High,TDD,GET /admin-portal/login/ renders login form (HTTP 200),"Automated (TDD):
 pytest accounts/tests/test_views.py::TestAdminLoginViewGet::test_get_renders_login_form","HTTP 200; login form rendered",AI,N/A,Passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
 S4-2,High,TDD,Login form contains email/password fields and CSRF token,"Automated (TDD):
 pytest ...::test_get_contains_email_and_password_fields
@@ -135,25 +135,25 @@ S5-9,High,N/A,Manual: access /admin-portal/proposals/ without session — verify
 S6-1,Medium,N/A,GET / renders proposal submission form,"Automated:
 pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_returns_200
 pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_renders_submit_template
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_contains_form","HTTP 200; submit.html rendered; form in context",AI,N/A,All 3 passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_contains_form","HTTP 200; submit.html rendered; form in context",AI,N/A,All 3 passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
 S6-2,Medium,N/A,POST valid (all fields): proposal saved with status=new + redirect to complete,"Automated:
 pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_creates_proposal
 pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_proposal_has_status_new
 pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_all_fields_saved
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_redirects_to_complete","Proposal.objects.count()==1; status=='new'; redirect to /submit/complete/",AI,N/A,All 4 passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_redirects_to_complete","Proposal.objects.count()==1; status=='new'; redirect to /submit/complete/",AI,N/A,All 4 passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
 S6-3,Medium,N/A,POST invalid title (empty): HTTP 200 + no proposal saved,"Automated:
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_empty_title_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),FR-PROP-03
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_empty_title_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
 S6-4,Medium,N/A,POST invalid body (empty): HTTP 200 + no proposal saved,"Automated:
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_empty_body_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_empty_body_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
 S6-5,Medium,N/A,POST invalid title (>100 chars): HTTP 200 + no proposal saved,"Automated:
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_title_too_long_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),FR-PROP-03
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_title_too_long_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
 S6-6,Medium,N/A,POST invalid body (>2000 chars): HTTP 200 + no proposal saved,"Automated:
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_body_too_long_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),FR-PROP-03
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_body_too_long_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
 S6-7,Medium,N/A,POST invalid submitter_contact (non-email): HTTP 200 + form error,"Automated:
-pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_submitter_contact_returns_200_with_error","HTTP 200; form.errors present; no proposal saved",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),FR-PROP-03
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_submitter_contact_returns_200_with_error","HTTP 200; form.errors present; no proposal saved",AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
 S6-8,Medium,N/A,ProposalForm validation: field constraints (required title/body; max lengths; optional fields; submitter_contact email format),"Automated:
-pytest proposals/tests/test_forms.py -v (12 tests)","All 12 ProposalForm tests pass",AI,N/A,All 12 passed.,Pass,2026-05-12,Working tree,Claude (Builder),FR-PROP-03
+pytest proposals/tests/test_forms.py -v (12 tests)","All 12 ProposalForm tests pass",AI,N/A,All 12 passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
 S6-9,Medium,N/A,GET /submit/complete/ returns 200 with complete template,"Automated:
-pytest proposals/tests/test_views_public.py::TestProposalSubmitCompleteView","HTTP 200; submit_complete.html rendered",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_views_public.py::TestProposalSubmitCompleteView","HTTP 200; submit_complete.html rendered",AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
 S6-10,Medium,N/A,Manual: submit valid proposal via browser — verify saved in DB with status=new,"Manual UI via browser","Proposal saved; status=new in DB; redirect to /submit/complete/",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
 S6-11,Medium,N/A,Manual: submit invalid contact email — verify form error shown and no proposal saved,"Manual UI via browser","Form re-rendered with error; no new row in DB",Human,Phase-blocking (Gate 3),Pending,Pending,,,Gate 3 item
