@@ -46,4 +46,4 @@ pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ordering_is_d
 S2-9,Medium,N/A,python manage.py migrate succeeds and all expected tables created,"Manual CLI:
 1. docker compose exec app python manage.py migrate
 2. Verify no errors
-3. Verify proposals_proposal / proposals_statushistory / accounts_adminloginlog tables exist in PostgreSQL","migrate exits 0; all three tables visible in psql or equivalent DB tool",Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,Working tree,Kawahara,Gate 1 Step 2 verification item
+3. Verify proposals_proposal / proposals_statushistory / accounts_adminloginlog tables exist in PostgreSQL","migrate exits 0; all three tables visible in psql or equivalent DB tool",Human,Phase-blocking,All 3 tables confirmed in psql \dt. Column types and constraints match design. ip_address is inet nullable. FK PROTECT constraints present.,Pass,2026-05-12,e039e16,Kawahara,Gate 1 fully cleared 2026-05-12
