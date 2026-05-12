@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Submit a Proposal — Mini Improvement Box{% endblock %}
+
+{% block content %}
+<h1>Submit an Improvement Proposal</h1>
+
+<form method="post" action="">
+  {% csrf_token %}
+  <div>
+    <label for="id_title">Title <span>*</span></label>
+    {{ form.title }}
+    {% if form.title.errors %}
+      <ul>{% for error in form.title.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+  <div>
+    <label for="id_body">Description <span>*</span></label>
+    {{ form.body }}
+    {% if form.body.errors %}
+      <ul>{% for error in form.body.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+  <div>
+    <label for="id_submitter_name">Your Name (optional)</label>
+    {{ form.submitter_name }}
+  </div>
+  <div>
+    <label for="id_submitter_contact">Contact Email (optional)</label>
+    {{ form.submitter_contact }}
+    {% if form.submitter_contact.errors %}
+      <ul>{% for error in form.submitter_contact.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+  <button type="submit">Submit Proposal</button>
+</form>
+{% endblock %}

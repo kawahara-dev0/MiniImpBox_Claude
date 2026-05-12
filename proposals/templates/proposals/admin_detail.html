@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Proposal #{{ proposal.pk }} — Admin Portal{% endblock %}
+
+{% block content %}
+<h1>Proposal #{{ proposal.pk }}</h1>
+
+<p><a href="{% url 'proposals_admin:list' %}">Back to list</a></p>
+
+{% if error == 'invalid_status' %}
+<p>Invalid status value. Please select a valid status.</p>
+{% endif %}
+
+<table>
+  <tr><th>Title</th><td>{{ proposal.title }}</td></tr>
+  <tr><th>Description</th><td>{{ proposal.body }}</td></tr>
+  <tr><th>Submitter Name</th><td>{{ proposal.submitter_name|default:"-" }}</td></tr>
+  <tr><th>Contact Email</th><td>{{ proposal.submitter_contact|default:"-" }}</td></tr>
+  <tr><th>Status</th><td>{{ proposal.get_status_display }}</td></tr>
+  <tr><th>Submitted</th><td>{{ proposal.created_at|date:"Y-m-d H:i" }}</td></tr>
+  <tr><th>Updated</th><td>{{ proposal.updated_at|date:"Y-m-d H:i" }}</td></tr>
+</table>
+
+<h2>Change Status</h2>
+<form method="post" action="{% url 'proposals_admin:status_change' proposal.pk %}">
+  {% csrf_token %}
+  {{ form.new_status }}
+  <button type="submit">Update Status</button>
+</form>
+
+<h2>Status History</h2>
+{% if history %}
+<table>
+  <thead>
+    <tr>
+      <th>Changed At</th>
+      <th>Changed By</th>
+      <th>From</th>
+      <th>To</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in history %}
+    <tr>
+      <td>{{ entry.changed_at|date:"Y-m-d H:i" }}</td>
+      <td>{{ entry.changed_by.email }}</td>
+      <td>{{ entry.old_status }}</td>
+      <td>{{ entry.new_status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No status changes yet.</p>
+{% endif %}
+{% endblock %}

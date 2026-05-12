@@ -1,8 +1,10 @@
-"""
-Public proposal URL patterns.
+from django.urls import path
 
-Step 1 placeholder — replaced with real patterns in Step 6.
-"""
+from . import views
+
 app_name = 'proposals'
 
-urlpatterns = []
+urlpatterns = [
+    path('', views.ProposalSubmitView.as_view(), name='submit'),
+    path('submit/complete/', views.ProposalSubmitCompleteView.as_view(), name='submit_complete'),
+]
