@@ -4,8 +4,6 @@ Tests for public proposal views: ProposalSubmitView, ProposalSubmitCompleteView.
 Step 6: Public proposal submission.
 Risk: Medium.
 """
-import pytest
-from django.urls import reverse
 from proposals.models import Proposal
 
 SUBMIT_URL = '/'

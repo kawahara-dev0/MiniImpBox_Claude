@@ -1,0 +1,11 @@
+"Environment","development / Docker Compose localhost — pytest-cov 6.1.0"
+"Final Approval","Pending"
+
+"No","Target Type","Target Name","Priority","Line Coverage","Branch Coverage","Critical Path Verified","Status","Test Date","Version / Commit","Tester","Remaining Risks","Notes"
+"1","file","accounts/backends.py","Critical","100%","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","","Authentication logic fully covered — correct credentials, wrong password, non-existent email, timing-safe dummy hash"
+"2","file","accounts/views.py","Critical","97%","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","Line 13 (HTTP_X_FORWARDED_FOR branch) not covered in test environment","All login/logout flows, AdminLoginLog write, and authorization branches covered. One branch (X-Forwarded-For IP extraction) not exercised in test client — acceptable."
+"3","file","accounts/models.py","High","100%","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","","AdminLoginLog model fields and append-only behavior covered"
+"4","file","proposals/views.py","High","100%","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","","All admin views (list, detail, status_change), public views, atomicity, authorization fully covered"
+"5","file","proposals/models.py","High","100%","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","","Proposal and StatusHistory fields, PROTECT FK behavior, VALID_STATUSES covered"
+"6","file","proposals/forms.py","High","100%","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","","ProposalForm and StatusChangeForm validation paths fully covered"
+"7","summary","All High-risk modules","High","99% (total)","","Yes","Pass","2026-05-12","Working tree","pytest-cov (Claude Builder)","","1 line missed across 147 total lines — well above Critical (90%) and High (80%) targets"

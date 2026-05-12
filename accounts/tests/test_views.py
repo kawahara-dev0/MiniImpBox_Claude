@@ -7,7 +7,6 @@ Test-first: written before implementation.
 """
 import pytest
 from django.contrib.auth import get_user_model
-from django.urls import reverse
 
 from accounts.models import AdminLoginLog
 

@@ -4,6 +4,7 @@ Test-first tests for accounts management commands.
 High-risk area: admin account seed (authentication setup).
 All test items are required per roadmap Step 3 acceptance criteria.
 """
+import contextlib
 import os
 import pytest
 from django.contrib.auth import get_user_model
@@ -65,9 +66,6 @@ class TestSeedAdminCommand:
         self._run_seed()
         output = self._run_seed()
         assert 'already exists' in output.lower() or 'Admin already exists' in output
-
-
-import contextlib
 
 
 @contextlib.contextmanager

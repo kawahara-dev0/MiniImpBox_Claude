@@ -8,7 +8,6 @@ Tests written before implementation.
 """
 import pytest
 from django.contrib.auth import get_user_model
-from django.urls import reverse
 from proposals.models import Proposal, StatusHistory
 
 User = get_user_model()

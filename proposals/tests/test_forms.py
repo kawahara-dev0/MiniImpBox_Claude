@@ -4,7 +4,6 @@ Tests for ProposalForm.
 Step 6: Public proposal submission.
 Risk: Medium.
 """
-import pytest
 from proposals.forms import ProposalForm
 
 
