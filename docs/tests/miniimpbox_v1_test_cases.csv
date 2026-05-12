@@ -213,10 +213,10 @@ S8-4,Medium,N/A,"Manual: run backup once when no files exist — verify success 
 S8-5,Medium,N/A,"Manual: run backup 15 times — verify exactly 14 files remain (oldest removed)","Manual CLI + ls count","ls ./backups/backup_*.sql.gz.gpg | wc -l == 14",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
 S8-6,Medium,N/A,"Manual: decrypt a backup and restore to DB — verify data is intact","Manual CLI + DB check","gpg decrypt | gunzip > restore.sql; psql restore succeeds; tables and rows intact",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item (ADR-004)
 S9-1,Medium,N/A,Lint (flake8) passes on accounts/ proposals/ config/ with .flake8 config,"CLI check:
-python -m flake8 accounts/ proposals/ config/","Exit code 0; no output",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),E221 excluded (alignment style); migrations excluded (auto-generated); F401 and E402 fixed
+python -m flake8 accounts/ proposals/ config/","Exit code 0; no output",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),E221 excluded (alignment style); migrations excluded (auto-generated); F401 and E402 fixed
 S9-2,Medium,N/A,Full test suite passes (119 tests),"Automated:
-python -m pytest --tb=short -q","119 passed; 0 failures",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+python -m pytest --tb=short -q","119 passed; 0 failures",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),
 S9-3,Medium,N/A,Test coverage for High-risk modules — all modules >= 80% (Critical >= 90%),"Automated:
-python -m pytest --cov=accounts.backends --cov=accounts.views --cov=accounts.models --cov=proposals.views --cov=proposals.models --cov=proposals.forms --cov-report=term-missing","backends 100%; views 97%; models 100%; forms 100%; total 99%",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),Results recorded in docs/tests/coverage_result.csv
+python -m pytest --cov=accounts.backends --cov=accounts.views --cov=accounts.models --cov=proposals.views --cov=proposals.models --cov=proposals.forms --cov-report=term-missing","backends 100%; views 97%; models 100%; forms 100%; total 99%",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),Results recorded in docs/tests/coverage_result.csv
 S9-4,Medium,N/A,"Grep: no .update() or .delete() on StatusHistory or AdminLoginLog in application code (ADR-005 Section 9.3)","CLI check:
-grep -rn StatusHistory.objects.update / AdminLoginLog.objects.update etc. in accounts/ proposals/ config/ (excluding tests)","No matches found",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),Confirms append-only constraint in application code (Reviewer Finding R2 from Step 7)
+grep -rn StatusHistory.objects.update / AdminLoginLog.objects.update etc. in accounts/ proposals/ config/ (excluding tests)","No matches found",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),Confirms append-only constraint in application code (Reviewer Finding R2 from Step 7)
