@@ -115,3 +115,20 @@ pytest ...::test_post_logout_unauthenticated_redirects_to_login","HTTP 302 to /a
 S4-15,High,N/A,Manual: login with correct credentials — AdminLoginLog success=True + redirect to list,"Manual UI via browser",Redirect to /admin-portal/proposals/; AdminLoginLog row success=True; no password in log,Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
 S4-16,High,N/A,Manual: login with wrong credentials — generic error + AdminLoginLog success=False,"Manual UI via browser","'Invalid email address or password.' shown; no session; AdminLoginLog success=False",Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
 S4-17,High,N/A,Manual: logout — session invalidated + redirect to login,"Manual UI via browser","Session invalidated; redirect to login; subsequent admin access redirects to login",Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S5-1,High,TDD,Unauthenticated GET /admin-portal/proposals/ redirects to login (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S5-2,High,TDD,Unauthenticated redirect includes next= param (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_unauthenticated_redirect_includes_next_param","next= present in Location; includes /admin-portal/proposals/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-04
+S5-3,High,TDD,Authenticated non-staff GET /admin-portal/proposals/ returns 403 (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_non_staff_authenticated_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S5-4,High,TDD,Authenticated is_staff=True GET /admin-portal/proposals/ proceeds to view (decorator),"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredDecorator::test_staff_authenticated_proceeds_to_view",HTTP 200,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S5-5,High,TDD,Unauthenticated request to AdminRequiredMixin CBV redirects to login,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_unauthenticated_redirects_to_login","HTTP 302; Location contains /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S5-6,High,TDD,Unauthenticated AdminRequiredMixin redirect includes next= param,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_unauthenticated_redirect_includes_next_param",next= present in Location,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-04
+S5-7,High,TDD,Authenticated non-staff AdminRequiredMixin raises PermissionDenied,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_non_staff_raises_permission_denied",PermissionDenied raised,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S5-8,High,TDD,Authenticated is_staff=True AdminRequiredMixin proceeds to view,"Automated (TDD):
+pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_staff_authenticated_proceeds_to_view",HTTP 200,AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-002
+S5-9,High,N/A,Manual: access /admin-portal/proposals/ without session — verify redirect to login with ?next= param,"Manual UI via browser",HTTP 302 to /admin-portal/login/?next=/admin-portal/proposals/,Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
