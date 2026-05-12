@@ -248,13 +248,13 @@ All roadmap acceptance criteria for status change atomicity and sensitive data n
 
 ## 11. Commit Hash
 
-**Commit:** Pending
+**Commit:** `2eaae3e`
 
 ---
 
 ## 12. Push Status
 
-**Status:** Pending commit. **Do not push until Gate 3 is cleared.** Gate 3 is phase-blocking — Phase 4 (Step 8) must not begin until Gate 3 human verification is complete.
+**Status:** Committed (`2eaae3e`). **Not pushed — awaiting Gate 3 clearance.** Gate 3 is phase-blocking — Phase 4 (Step 8) must not begin and this commit must not be pushed until Gate 3 human verification is recorded in `docs/implementation/gate-03-functional.md`.
 
 ---
 
