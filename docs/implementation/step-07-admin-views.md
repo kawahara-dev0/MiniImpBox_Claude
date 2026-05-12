@@ -207,13 +207,13 @@ All roadmap acceptance criteria for status change atomicity and sensitive data n
 
 | ID | Item | Classification | Status |
 |---|---|---|---|
-| HV-S7-1 | Manual browser: view proposal list — verify ordered by -created_at, 20/page (S7-16) | Phase-blocking (Gate 3) | Pending |
-| HV-S7-2 | Manual browser: view proposal detail — verify all fields, StatusHistory visible (S7-17) | Phase-blocking (Gate 3) | Pending |
-| HV-S7-3 | Manual browser: change proposal status — verify DB update + StatusHistory row (S7-18) | Phase-blocking (Gate 3) | Pending |
-| HV-S7-4 | Manual browser: verify unauthenticated access redirects to login with ?next= (S7-19) | Phase-blocking (Gate 3) | Pending |
-| HV-S7-5 | DB-level check: verify proposal.body and submitter fields not in status_history table | Phase-blocking (Gate 3) | Pending |
+| HV-S7-1 | Manual browser: view proposal list — verify ordered by -created_at, 20/page (S7-16) | Phase-blocking (Gate 3) | Pass — 2026-05-12 (Kawahara) |
+| HV-S7-2 | Manual browser: view proposal detail — verify all fields, StatusHistory visible (S7-17) | Phase-blocking (Gate 3) | Pass — 2026-05-12 (Kawahara) |
+| HV-S7-3 | Manual browser: change proposal status — verify DB update + StatusHistory row (S7-18) | Phase-blocking (Gate 3) | Pass — 2026-05-12 (Kawahara) |
+| HV-S7-4 | Manual browser: verify unauthenticated access redirects to login with ?next= (S7-19) | Phase-blocking (Gate 3) | Pass — 2026-05-12 (Kawahara) |
+| HV-S7-5 | DB-level check: verify proposal.body and submitter fields not in status_history table | Phase-blocking (Gate 3) | Pass — 2026-05-12 (Kawahara) |
 
-**Gate note:** Human Gate 3 must be cleared before Phase 4 (Step 8) begins. Gate 3 decision recorded in `docs/implementation/gate-03-functional.md`.
+**Gate note:** Gate 3 cleared 2026-05-12 by System Owner (Kawahara). Gate record: `docs/implementation/gate-03-functional.md`. Phase 4 (Step 8) may now begin.
 
 ---
 
@@ -254,7 +254,7 @@ All roadmap acceptance criteria for status change atomicity and sensitive data n
 
 ## 12. Push Status
 
-**Status:** Committed (`2eaae3e`). **Not pushed — awaiting Gate 3 clearance.** Gate 3 is phase-blocking — Phase 4 (Step 8) must not begin and this commit must not be pushed until Gate 3 human verification is recorded in `docs/implementation/gate-03-functional.md`.
+**Status:** Pushed. Gate 3 cleared by System Owner (Kawahara) on 2026-05-12. Gate record: `docs/implementation/gate-03-functional.md`. Commits `2eaae3e` and `a3e3af4` pushed to `origin/master`.
 
 ---
 
