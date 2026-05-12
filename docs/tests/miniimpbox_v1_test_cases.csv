@@ -205,9 +205,9 @@ S7-17,High,N/A,Manual: view proposal detail — verify all fields displayed with
 S7-18,High,N/A,Manual: change proposal status — verify status updated in DB and StatusHistory row created,"Manual UI via browser","status updated; StatusHistory row visible in detail; no sensitive fields in history",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
 S7-19,High,N/A,Manual: unauthenticated access to /admin-portal/proposals/ redirects to login (real list view),"Manual UI via browser","HTTP 302 to /admin-portal/login/?next=/admin-portal/proposals/",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
 S8-1,Medium,N/A,scripts/backup.sh syntax check (bash -n),"CLI check:
-bash -n scripts/backup.sh","Exit code 0; no syntax errors",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+bash -n scripts/backup.sh","Exit code 0; no syntax errors",AI,N/A,Passed.,Pass,2026-05-12,001691d,Claude (Builder),
 S8-2,Medium,N/A,scripts/backup.sh is executable (chmod +x),"CLI check:
-ls -la scripts/backup.sh","Permissions show -rwxr-xr-x",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+ls -la scripts/backup.sh","Permissions show -rwxr-xr-x",AI,N/A,Passed.,Pass,2026-05-12,001691d,Claude (Builder),
 S8-3,Medium,N/A,"Manual: run backup once — verify encrypted file created in ./backups/ named backup_YYYYMMDD_HHMMSS.sql.gz.gpg","Manual CLI + file check","File exists with correct naming; exit code 0",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
 S8-4,Medium,N/A,"Manual: run backup once when no files exist — verify success (no rotation error)","Manual CLI","Exit code 0; one file in ./backups/",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
 S8-5,Medium,N/A,"Manual: run backup 15 times — verify exactly 14 files remain (oldest removed)","Manual CLI + ls count","ls ./backups/backup_*.sql.gz.gpg | wc -l == 14",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
