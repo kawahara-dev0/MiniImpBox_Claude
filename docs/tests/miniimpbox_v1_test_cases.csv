@@ -26,23 +26,23 @@ S2-1,Medium,N/A,Proposal.STATUS_CHOICES values and VALID_STATUSES completeness,"
 pytest proposals/tests/test_models.py::TestProposalModel::test_status_choices_values
 pytest proposals/tests/test_models.py::TestProposalModel::test_valid_statuses_matches_status_choices
 pytest proposals/tests/test_models.py::TestProposalModel::test_status_choices_has_five_items
-pytest proposals/tests/test_models.py::TestProposalModel::test_status_constants_are_in_valid_statuses","VALID_STATUSES == {new reviewing planned done declined}; matches STATUS_CHOICES; 5 items; all STATUS_* constants present",AI,N/A,"All 4 tests passed. VALID_STATUSES = {new, reviewing, planned, done, declined}",Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_models.py::TestProposalModel::test_status_constants_are_in_valid_statuses","VALID_STATUSES == {new reviewing planned done declined}; matches STATUS_CHOICES; 5 items; all STATUS_* constants present",AI,N/A,"All 4 tests passed. VALID_STATUSES = {new, reviewing, planned, done, declined}",Pass,2026-05-12,b7b2312,Claude (Builder),
 S2-2,Medium,N/A,Proposal field defaults (status=new submitter_name='' submitter_contact=''),"Automated:
 pytest proposals/tests/test_models.py::TestProposalModel::test_default_status_is_new
 pytest proposals/tests/test_models.py::TestProposalModel::test_submitter_name_default_blank
-pytest proposals/tests/test_models.py::TestProposalModel::test_submitter_contact_default_blank","status default is 'new'; submitter_name default is ''; submitter_contact default is ''",AI,N/A,All 3 tests passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_models.py::TestProposalModel::test_submitter_contact_default_blank","status default is 'new'; submitter_name default is ''; submitter_contact default is ''",AI,N/A,All 3 tests passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
 S2-3,Medium,N/A,Proposal.Meta.ordering is -created_at,"Automated:
-pytest proposals/tests/test_models.py::TestProposalModel::test_ordering_is_descending_created_at",Proposal._meta.ordering == ['-created_at'],AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_models.py::TestProposalModel::test_ordering_is_descending_created_at",Proposal._meta.ordering == ['-created_at'],AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
 S2-4,High,N/A,on_delete=PROTECT on StatusHistory.proposal raises ProtectedError,"Automated:
-pytest proposals/tests/test_models.py::TestStatusHistoryModel::test_protect_on_delete_proposal","Deleting a Proposal with linked StatusHistory rows raises django.db.models.deletion.ProtectedError",AI,N/A,Passed. ProtectedError confirmed raised.,Pass,2026-05-12,Working tree,Claude (Builder),Regression guard per roadmap Step 2 test coverage requirement
+pytest proposals/tests/test_models.py::TestStatusHistoryModel::test_protect_on_delete_proposal","Deleting a Proposal with linked StatusHistory rows raises django.db.models.deletion.ProtectedError",AI,N/A,Passed. ProtectedError confirmed raised.,Pass,2026-05-12,b7b2312,Claude (Builder),Regression guard per roadmap Step 2 test coverage requirement
 S2-5,High,N/A,on_delete=PROTECT on StatusHistory.changed_by raises ProtectedError,"Automated:
-pytest proposals/tests/test_models.py::TestStatusHistoryModel::test_protect_on_delete_user","Deleting a User referenced in StatusHistory rows raises ProtectedError",AI,N/A,Passed. ProtectedError confirmed raised.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest proposals/tests/test_models.py::TestStatusHistoryModel::test_protect_on_delete_user","Deleting a User referenced in StatusHistory rows raises ProtectedError",AI,N/A,Passed. ProtectedError confirmed raised.,Pass,2026-05-12,b7b2312,Claude (Builder),
 S2-6,Medium,N/A,AdminLoginLog.ip_address is nullable and blank-allowed,"Automated:
-pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ip_address_nullable","ip_address field has null=True and blank=True per basic design Section 3.3 (BD-02 pending)",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),BD-02 pending: confirm IP logging under applicable data handling rules before trial
+pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ip_address_nullable","ip_address field has null=True and blank=True per basic design Section 3.3 (BD-02 pending)",AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),BD-02 pending: confirm IP logging under applicable data handling rules before trial
 S2-7,Medium,N/A,AdminLoginLog.email is CharField not FK,"Automated:
-pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_email_is_charfield_not_fk","email field is CharField(max_length=254); stores submitted value regardless of account existence",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_email_is_charfield_not_fk","email field is CharField(max_length=254); stores submitted value regardless of account existence",AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
 S2-8,Medium,N/A,AdminLoginLog.Meta.ordering is -attempted_at,"Automated:
-pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ordering_is_descending_attempted_at",AdminLoginLog._meta.ordering == ['-attempted_at'],AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder),
+pytest accounts/tests/test_models.py::TestAdminLoginLogModel::test_ordering_is_descending_attempted_at",AdminLoginLog._meta.ordering == ['-attempted_at'],AI,N/A,Passed.,Pass,2026-05-12,b7b2312,Claude (Builder),
 S2-9,Medium,N/A,python manage.py migrate succeeds and all expected tables created,"Manual CLI:
 1. docker compose exec app python manage.py migrate
 2. Verify no errors
