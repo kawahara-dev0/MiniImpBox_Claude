@@ -250,13 +250,13 @@ All 13 acceptance criteria from roadmap Step 4 are covered by automated tests. A
 
 ## 11. Commit Hash
 
-**Status:** Pending — will be updated after commit.
+**Commit:** `852e882`
 
 ---
 
 ## 12. Push Status
 
-**Status:** Pending.
+**Status:** Pending push.
 
 **Gate check:** Step 4 is in Phase 2. Human Gate 2 covers Steps 3–5 end-to-end. Gate 2 does not block push of this step — it blocks the start of Phase 3. Push may proceed after commit.
 
