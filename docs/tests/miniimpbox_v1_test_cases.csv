@@ -1,24 +1,24 @@
-Environment,development / Docker Compose localhost,,,,,,,,,,,,,
-Tester Agent Used,No,,,,,,,,,,,,,
-Final Approval,Pending,,,,,,,,,,,,,
+Environment,development / Docker Compose localhost,,,,,,,,,,,,
+Tester Agent Used,No,,,,,,,,,,,,
+Final Approval,Pending,,,,,,,,,,,,
 ,,,,,,,,,,,,,
 No,Priority,TDD Required,Test Item,Method,Expected Result,Executor,Verification Gate,Actual Result,Status,Test Date,Version / Commit,Actual Executor,Notes
-S1-1,Low,N/A,".gitignore contains .env and no secret values are committed","AI review:
+S1-1,Low,N/A,.gitignore contains .env and no secret values are committed,"AI review:
 1. Read .gitignore and confirm .env is listed
 2. Confirm .env.example is present and contains only placeholder values
-3. Confirm .env is not present in the repository working tree","`.env` is listed in `.gitignore`; `.env.example` is committed with placeholder values only; no real secret is committed",AI,N/A,".env listed in .gitignore confirmed. .env.example contains only placeholder values. .env not tracked.",Pass,2026-05-12,Working tree,Claude (Cowork / Builder),Post-commit: update Version/Commit to commit hash
+3. Confirm .env is not present in the repository working tree",`.env` is listed in `.gitignore`; `.env.example` is committed with placeholder values only; no real secret is committed,AI,N/A,.env listed in .gitignore confirmed. .env.example contains only placeholder values. .env not tracked.,Pass,2026-05-12,4f12728,Claude (Cowork / Builder),Post-commit: update Version/Commit to commit hash
 S1-2,Low,N/A,docker compose up starts app and db services without error,"Manual UI:
 1. Copy .env.example to .env and fill in local values
 2. Run: docker compose up
 3. Observe startup logs for both app and db containers
 4. Confirm no error or crash in logs
-5. Confirm app container is listening on port 8000","Both app and db containers start successfully. No error or crash in startup logs. Port 8000 is accessible.",Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,Working tree,Kawahara,Gate 1 cleared 2026-05-12
+5. Confirm app container is listening on port 8000",Both app and db containers start successfully. No error or crash in startup logs. Port 8000 is accessible.,Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,4f12728,Kawahara,Gate 1 cleared 2026-05-12
 S1-3,Low,N/A,manage.py check passes with no system check errors,"CLI check:
 1. With docker compose running, execute:
    docker compose exec app python manage.py check
-2. Observe output","Command exits 0. Output shows 'System check identified no issues (0 silenced)'. No errors reported.",Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,Working tree,Kawahara,"Gate 1 cleared 2026-05-12. STATICFILES_STORAGE deprecation warning is non-blocking per Reviewer Finding R2."
+2. Observe output",Command exits 0. Output shows 'System check identified no issues (0 silenced)'. No errors reported.,Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,4f12728,Kawahara,Gate 1 cleared 2026-05-12. STATICFILES_STORAGE deprecation warning is non-blocking per Reviewer Finding R2.
 S1-4,Low,N/A,pgdata volume persists across docker compose down and up,"Manual UI:
 1. With docker compose running, verify the app is accessible at http://localhost:8000
 2. Run: docker compose down  (without --volumes)
 3. Run: docker compose up
-4. Verify the app starts again and data in the database (if any) is preserved","After restart, the pgdata volume is intact and the database state is unchanged. No data loss.",Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,Working tree,Kawahara,"Gate 1 cleared 2026-05-12. 'docker compose down --volumes' is destructive and must NOT be run in normal operations."
+4. Verify the app starts again and data in the database (if any) is preserved","After restart, the pgdata volume is intact and the database state is unchanged. No data loss.",Human,Phase-blocking,Same as Expected Result,Pass,2026-05-12,4f12728,Kawahara,Gate 1 cleared 2026-05-12. 'docker compose down --volumes' is destructive and must NOT be run in normal operations.
