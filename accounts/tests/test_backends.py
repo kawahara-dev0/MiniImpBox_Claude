@@ -5,7 +5,7 @@ High-risk area: authentication logic.
 All test items are required per roadmap Step 3 acceptance criteria.
 """
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from django.contrib.auth import get_user_model
 
 from accounts.backends import EmailBackend

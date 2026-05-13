@@ -75,7 +75,7 @@ pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_idempotent_
 S3-13,High,TDD,seed_admin second run outputs 'already exists' warning,"Automated (TDD):
 pytest accounts/tests/test_management.py::TestSeedAdminCommand::test_second_run_outputs_already_exists_warning","stdout contains 'Admin already exists' or 'already exists'",AI,N/A,Passed.,Pass,2026-05-12,63e7f72,Claude (Builder / TDD),
 S3-14,High,N/A,AUTHENTICATION_BACKENDS setting is correctly set to EmailBackend,"AI review:
-Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,Working tree,Claude (Builder),Already set in Step 1; no change required in Step 3S4-1,High,TDD,GET /admin-portal/login/ renders login form (HTTP 200),"Automated (TDD):
+Read config/settings.py and confirm AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']","AUTHENTICATION_BACKENDS contains exactly ['accounts.backends.EmailBackend']",AI,N/A,Confirmed in settings.py from Step 1.,Pass,2026-05-12,b78c4a3,Claude (Builder),Already set in Step 1; no change required in Step 3S4-1,High,TDD,GET /admin-portal/login/ renders login form (HTTP 200),"Automated (TDD):
 pytest accounts/tests/test_views.py::TestAdminLoginViewGet::test_get_renders_login_form","HTTP 200; login form rendered",AI,N/A,Passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
 S4-2,High,TDD,Login form contains email/password fields and CSRF token,"Automated (TDD):
 pytest ...::test_get_contains_email_and_password_fields
@@ -86,10 +86,10 @@ S4-4,High,TDD,POST correct credentials: session created + redirect to list,"Auto
 pytest ...::test_correct_credentials_redirects_to_list
 pytest ...::test_correct_credentials_creates_session","HTTP 302 to /admin-portal/proposals/; _auth_user_id in session",AI,N/A,Both passed.,Pass,2026-05-12,852e882,Claude (Builder / TDD),
 S4-5,High,TDD,POST correct credentials: AdminLoginLog written with success=True,"Automated (TDD):
-pytest ...::test_correct_credentials_writes_login_log_success_true","AdminLoginLog row: email=submitted email success=True",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+pytest ...::test_correct_credentials_writes_login_log_success_true","AdminLoginLog row: email=submitted email success=True",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005
 S4-6,High,TDD,POST correct credentials: password not in any AdminLoginLog column,"Automated (TDD):
 pytest ...::test_correct_credentials_login_log_has_no_password
-pytest ...::test_password_not_in_any_log_column_on_success","plaintext password not present in email/success/ip_address fields",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+pytest ...::test_password_not_in_any_log_column_on_success","plaintext password not present in email/success/ip_address fields",AI,N/A,Both passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005 / HD-19
 S4-7,High,TDD,POST wrong password: HTTP 200 + generic error + no session,"Automated (TDD):
 pytest ...::test_wrong_password_returns_200
 pytest ...::test_wrong_password_no_session
@@ -102,9 +102,9 @@ pytest ...::test_nonexistent_email_no_session
 pytest ...::test_nonexistent_email_shows_same_generic_error
 pytest ...::test_nonexistent_email_writes_login_log_success_false","HTTP 200; same generic error; no session; AdminLoginLog written success=False",AI,N/A,All 4 passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),FR-AUTH-05
 S4-10,High,TDD,AdminLoginLog written before response on failure,"Automated (TDD):
-pytest ...::test_login_log_written_before_response_on_failure","Log row exists after failed POST",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005
+pytest ...::test_login_log_written_before_response_on_failure","Log row exists after failed POST",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005
 S4-11,High,TDD,Password not in any AdminLoginLog column on failure,"Automated (TDD):
-pytest ...::test_password_not_in_any_log_column_on_failure","plaintext password not in any stored field",AI,N/A,Passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-005 / HD-19
+pytest ...::test_password_not_in_any_log_column_on_failure","plaintext password not in any stored field",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005 / HD-19
 S4-12,High,TDD,POST /admin-portal/logout/ invalidates session + redirects to login,"Automated (TDD):
 pytest ...::test_post_logout_invalidates_session
 pytest ...::test_post_logout_redirects_to_login","_auth_user_id removed from session; HTTP 302 to /admin-portal/login/",AI,N/A,Both passed.,Pass,2026-05-12,Working tree,Claude (Builder / TDD),ADR-001
@@ -132,3 +132,91 @@ pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_non_staff
 S5-8,High,TDD,Authenticated is_staff=True AdminRequiredMixin proceeds to view,"Automated (TDD):
 pytest accounts/tests/test_decorators.py::TestAdminRequiredMixin::test_staff_authenticated_proceeds_to_view",HTTP 200,AI,N/A,Passed.,Pass,2026-05-12,cd18007,Claude (Builder / TDD),ADR-002
 S5-9,High,N/A,Manual: access /admin-portal/proposals/ without session — verify redirect to login with ?next= param,"Manual UI via browser",HTTP 302 to /admin-portal/login/?next=/admin-portal/proposals/,Human,Phase-blocking (Gate 2),Pending,Pending,,,Gate 2 item
+S6-1,Medium,N/A,GET / renders proposal submission form,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_returns_200
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_renders_submit_template
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewGet::test_get_contains_form","HTTP 200; submit.html rendered; form in context",AI,N/A,All 3 passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
+S6-2,Medium,N/A,POST valid (all fields): proposal saved with status=new + redirect to complete,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_creates_proposal
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_proposal_has_status_new
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_all_fields_saved
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_valid_post_redirects_to_complete","Proposal.objects.count()==1; status=='new'; redirect to /submit/complete/",AI,N/A,All 4 passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
+S6-3,Medium,N/A,POST invalid title (empty): HTTP 200 + no proposal saved,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_empty_title_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
+S6-4,Medium,N/A,POST invalid body (empty): HTTP 200 + no proposal saved,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_empty_body_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
+S6-5,Medium,N/A,POST invalid title (>100 chars): HTTP 200 + no proposal saved,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_title_too_long_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
+S6-6,Medium,N/A,POST invalid body (>2000 chars): HTTP 200 + no proposal saved,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_body_too_long_returns_200",HTTP 200; Proposal.objects.count()==0,AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
+S6-7,Medium,N/A,POST invalid submitter_contact (non-email): HTTP 200 + form error,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitViewPost::test_invalid_submitter_contact_returns_200_with_error","HTTP 200; form.errors present; no proposal saved",AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
+S6-8,Medium,N/A,ProposalForm validation: field constraints (required title/body; max lengths; optional fields; submitter_contact email format),"Automated:
+pytest proposals/tests/test_forms.py -v (12 tests)","All 12 ProposalForm tests pass",AI,N/A,All 12 passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),FR-PROP-03
+S6-9,Medium,N/A,GET /submit/complete/ returns 200 with complete template,"Automated:
+pytest proposals/tests/test_views_public.py::TestProposalSubmitCompleteView","HTTP 200; submit_complete.html rendered",AI,N/A,Passed.,Pass,2026-05-12,b78c4a3,Claude (Builder),
+S6-10,Medium,N/A,Manual: submit valid proposal via browser — verify saved in DB with status=new,"Manual UI via browser","Proposal saved; status=new in DB; redirect to /submit/complete/",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
+S6-11,Medium,N/A,Manual: submit invalid contact email — verify form error shown and no proposal saved,"Manual UI via browser","Form re-rendered with error; no new row in DB",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
+S7-1,High,TDD,Unauthenticated GET /admin-portal/proposals/ redirects to login (real list view),"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-002
+S7-2,High,TDD,Non-staff GET /admin-portal/proposals/ returns 403,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_non_staff_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-002
+S7-3,High,TDD,Staff GET /admin-portal/proposals/ returns 200 with admin_list.html template,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_staff_gets_200
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_list_uses_correct_template
+pytest proposals/tests/test_views_admin.py::TestAdminProposalListView::test_pagination_context_present","HTTP 200; admin_list.html; page_obj in context",AI,N/A,All 3 passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),FR-ADMIN-03
+S7-4,High,TDD,Unauthenticated GET /admin-portal/proposals/<pk>/ redirects to login,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-002
+S7-5,High,TDD,Non-staff GET /admin-portal/proposals/<pk>/ returns 403,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_non_staff_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-002
+S7-6,High,TDD,Staff GET /admin-portal/proposals/<pk>/ returns 200 with correct context,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_staff_gets_200
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_uses_correct_template
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_context_contains_proposal
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_context_contains_status_history
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_detail_context_contains_form","HTTP 200; admin_detail.html; proposal/history/form in context",AI,N/A,All 5 passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),
+S7-7,High,TDD,GET /admin-portal/proposals/99999/ returns 404,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminProposalDetailView::test_nonexistent_proposal_returns_404",HTTP 404,AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),
+S7-8,High,TDD,Unauthenticated POST /admin-portal/proposals/<pk>/status/ redirects to login,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_unauthenticated_redirects_to_login","HTTP 302; Location starts with /admin-portal/login/",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-002
+S7-9,High,TDD,Non-staff POST /admin-portal/proposals/<pk>/status/ returns 403,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_non_staff_returns_403",HTTP 403,AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-002
+S7-10,High,TDD,Valid status change updates proposal.status atomically with StatusHistory creation,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_updates_proposal
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_creates_history_row
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_both_proposal_and_history_updated_atomically","proposal.status updated; StatusHistory row created; both in same transaction",AI,N/A,All 3 passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005 / basic design Section 9.1
+S7-11,High,TDD,StatusHistory row records correct old_status new_status changed_by,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_history_records_old_and_new_status
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_history_records_changed_by","old_status=='new'; new_status=='reviewing'; changed_by==staff_user",AI,N/A,Both passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005
+S7-12,High,TDD,Valid status change redirects to proposal detail,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_valid_status_change_redirects_to_detail","HTTP 302 to /admin-portal/proposals/<pk>/",AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),
+S7-13,High,TDD,Invalid status value does not update proposal and does not create StatusHistory row (atomicity),"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_invalid_status_does_not_update_proposal
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_invalid_status_does_not_create_history_row","proposal.status unchanged; StatusHistory.objects.count()==0",AI,N/A,Both passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),FR-ADMIN-07 / HD-08 / basic design Section 9.1
+S7-14,High,TDD,StatusHistory has no body/submitter_name/submitter_contact fields (sensitive data non-disclosure),"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_has_no_body_field
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_has_no_submitter_name_field
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_has_no_submitter_contact_field
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_status_history_row_does_not_contain_proposal_body","No sensitive proposal fields in StatusHistory",AI,N/A,All 4 passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),ADR-005 / HD-19
+S7-15,High,TDD,POST /admin-portal/proposals/99999/status/ returns 404,"Automated (TDD):
+pytest proposals/tests/test_views_admin.py::TestAdminStatusChangeView::test_nonexistent_proposal_status_change_returns_404",HTTP 404,AI,N/A,Passed.,Pass,2026-05-12,2eaae3e,Claude (Builder / TDD),
+S7-16,High,N/A,Manual: view proposal list — verify proposals ordered by -created_at 20/page,"Manual UI via browser","Proposals listed newest first; paginator appears with >20 proposals",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
+S7-17,High,N/A,Manual: view proposal detail — verify all fields displayed with status history,"Manual UI via browser","All fields shown; StatusHistory rows visible in order",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
+S7-18,High,N/A,Manual: change proposal status — verify status updated in DB and StatusHistory row created,"Manual UI via browser","status updated; StatusHistory row visible in detail; no sensitive fields in history",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
+S7-19,High,N/A,Manual: unauthenticated access to /admin-portal/proposals/ redirects to login (real list view),"Manual UI via browser","HTTP 302 to /admin-portal/login/?next=/admin-portal/proposals/",Human,Phase-blocking (Gate 3),Passed.,Pass,2026-05-12,,Kawahara (System Owner),Gate 3 cleared 2026-05-12
+S8-1,Medium,N/A,scripts/backup.sh syntax check (bash -n),"CLI check:
+bash -n scripts/backup.sh","Exit code 0; no syntax errors",AI,N/A,Passed.,Pass,2026-05-12,001691d,Claude (Builder),
+S8-2,Medium,N/A,scripts/backup.sh is executable (chmod +x),"CLI check:
+ls -la scripts/backup.sh","Permissions show -rwxr-xr-x",AI,N/A,Passed.,Pass,2026-05-12,001691d,Claude (Builder),
+S8-3,Medium,N/A,"Manual: run backup once — verify encrypted file created in ./backups/ named backup_YYYYMMDD_HHMMSS.sql.gz.gpg","Manual CLI + file check","File exists with correct naming; exit code 0",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
+S8-4,Medium,N/A,"Manual: run backup once when no files exist — verify success (no rotation error)","Manual CLI","Exit code 0; one file in ./backups/",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
+S8-5,Medium,N/A,"Manual: run backup 15 times — verify exactly 14 files remain (oldest removed)","Manual CLI + ls count","ls ./backups/backup_*.sql.gz.gpg | wc -l == 14",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item
+S8-6,Medium,N/A,"Manual: decrypt a backup and restore to DB — verify data is intact","Manual CLI + DB check","gpg decrypt | gunzip > restore.sql; psql restore succeeds; tables and rows intact",Human,Release-blocking (Gate 4),Pending,Pending,,,Gate 4 item (ADR-004)
+S9-1,Medium,N/A,Lint (flake8) passes on accounts/ proposals/ config/ with .flake8 config,"CLI check:
+python -m flake8 accounts/ proposals/ config/","Exit code 0; no output",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),E221 excluded (alignment style); migrations excluded (auto-generated); F401 and E402 fixed
+S9-2,Medium,N/A,Full test suite passes (119 tests),"Automated:
+python -m pytest --tb=short -q","119 passed; 0 failures",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),
+S9-3,Medium,N/A,Test coverage for High-risk modules — all modules >= 80% (Critical >= 90%),"Automated:
+python -m pytest --cov=accounts.backends --cov=accounts.views --cov=accounts.models --cov=proposals.views --cov=proposals.models --cov=proposals.forms --cov-report=term-missing","backends 100%; views 97%; models 100%; forms 100%; total 99%",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),Results recorded in docs/tests/coverage_result.csv
+S9-4,Medium,N/A,"Grep: no .update() or .delete() on StatusHistory or AdminLoginLog in application code (ADR-005 Section 9.3)","CLI check:
+grep -rn StatusHistory.objects.update / AdminLoginLog.objects.update etc. in accounts/ proposals/ config/ (excluding tests)","No matches found",AI,N/A,Passed.,Pass,2026-05-12,f2513e0,Claude (Builder),Confirms append-only constraint in application code (Reviewer Finding R2 from Step 7)

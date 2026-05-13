@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError
 from django.db.models.deletion import ProtectedError
 
 from proposals.models import Proposal, StatusHistory

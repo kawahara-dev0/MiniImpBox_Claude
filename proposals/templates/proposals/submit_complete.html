@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Proposal Submitted — Mini Improvement Box{% endblock %}
+
+{% block content %}
+<h1>Thank you!</h1>
+<p>Your proposal has been submitted successfully.</p>
+<p><a href="{% url 'proposals:submit' %}">Submit another proposal</a></p>
+{% endblock %}
